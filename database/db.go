@@ -5,18 +5,23 @@ import (
 	"gorm.io/gorm"
 )
 
-type Product struct {
-  gorm.Model
-  Code  string
-  Price uint
+type Todo struct {
+ ID uint `json:"id" gorm:"primary_key"`
+ Username string `json:"username"`
+ Title string `json:"title"`
+ Messgae string `json:"message"`
 }
 
-func CreateDB(){
-	db, err := gorm.Open(sqlite.Open("test.db"),&gorm.Config{})
+var DB *gorm.DB
+
+func ConnectDatabase(){
+	database, err := gorm.Open(sqlite.Open("test.db"),&gorm.Config{})
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&Product{})
+	database.AutoMigrate(&Todo{})
+
+	DB = database
 }
